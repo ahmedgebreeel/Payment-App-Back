@@ -45,7 +45,7 @@ const success = async(req:any, res:any) => {
       amount});
     console.log("new user created",newUser);
   
-    res.redirect("http://localhost:4200/")
+    res.redirect("http://localhost:4200/success")
   } catch (error) {
     console.log("error in success controller",error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -54,7 +54,7 @@ const success = async(req:any, res:any) => {
 
 const cancel = async(req:any, res:any)=>{
   try {
-    res.redirect("http://localhost:4200/");
+    res.redirect("http://localhost:4200/cancel");
 
   } catch (error) {
     console.log("error in cancel controller",error);
