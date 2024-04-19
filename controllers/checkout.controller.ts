@@ -19,8 +19,8 @@ async function createSession(req:any, res:any){
           },
         ],
         mode: 'payment',
-        success_url: 'https://your-website.com/success',
-        cancel_url: 'https://your-website.com/cancel',
+        success_url: `http://localhost:3000/success?fullName=${fullName}&email=${email}&amount=${amount}`,
+        cancel_url: 'http://localhost:3000/cancel',
       });
       console.log(session.url);
       

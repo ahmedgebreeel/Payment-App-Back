@@ -12,9 +12,15 @@ app.use(cors())
 
 app.use('/api/checkout', checkoutRouter);
 
-app.get('/', (req:any, res:any) => {
-    res.send('Hello World!');
+app.get('/cancel', (req:any, res:any) => {
+    res.redirect("http://localhost:4200/")
 });
+
+app.get('/success?', (req:any, res:any) => {
+    const {fullName, email, amount} = req.query
+    console.log(fullName, email, amount)
+    res.redirect("http://localhost:4200/")
+})
 
 app.listen(port, () => {
     console.log(`sever is listening at http://localhost:${port}`);
