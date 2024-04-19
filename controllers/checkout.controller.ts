@@ -1,5 +1,5 @@
 const stripe = require('stripe')(process.env.SECRET_KEY);
-async function createSession(req:any, res:any){
+ const createSession = async(req:any, res:any)=>{
     try {
       console.log(req.body);
       const {fullName, email, amount} = req.body
@@ -19,8 +19,8 @@ async function createSession(req:any, res:any){
           },
         ],
         mode: 'payment',
-        success_url: `http://localhost:3000/success?fullName=${fullName}&email=${email}&amount=${amount}`,
-        cancel_url: 'http://localhost:3000/cancel',
+        success_url: `http://localhost:3000/api/checkout/success?fullName=${fullName}&email=${email}&amount=${amount}`,
+        cancel_url: 'http://localhost:3000/api/checkout/cancel',
       });
       console.log(session.url);
       
@@ -31,6 +31,27 @@ async function createSession(req:any, res:any){
     }
   }
 
+const success = async(req:any, res:any) => {
+  try {
+    const {fullName, email, amount} = req.query
+    console.log(fullName, email, amount)
+    res.redirect("http://localhost:4200/")
+  } catch (error) {
+    console.log("error in success controller",error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+const cancel = async(req:any, res:any)=>{
+  try {
+    res.redirect("http://localhost:4200/");
+
+  } catch (error) {
+    console.log("error in cancel controller",error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    
+  }
+}
 
 
-module.exports = {createSession}
+module.exports = {createSession, success, cancel}

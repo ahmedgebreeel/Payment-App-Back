@@ -1,8 +1,11 @@
 
 const router = require('express').Router();
-const createSessionController = require('../controllers/checkout.controller');
+const checkoutController = require('../controllers/checkout.controller');
 
-router.post('/session', createSessionController.createSession);
+
+router.post('/session', checkoutController.createSession);
+router.get('/success', checkoutController.success);
+router.get('/cancel', checkoutController.cancel);
 
 
 
