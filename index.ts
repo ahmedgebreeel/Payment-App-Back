@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors')
 
+const _sequelize = require('./config/db');
 const checkoutRouter  = require('./routes/checkout.router');
 
 const app = express();
@@ -14,7 +15,14 @@ app.use('/api/checkout', checkoutRouter);
 
 
 
-
-app.listen(port, () => {
-    console.log(`sever is listening at http://localhost:${port}`);
-});
+_sequelize.sync()
+    .then(
+        () => {
+            console.log('database connected');
+            app.listen(port, () => {
+                console.log(`sever is listening at http://localhost:${port}`);
+            });
+        }
+    ).catch((err:any)=>{
+        console.log("error in connecting db" ,err);
+    })

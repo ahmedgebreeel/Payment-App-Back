@@ -34,7 +34,8 @@ const stripe = require('stripe')(process.env.SECRET_KEY);
 const success = async(req:any, res:any) => {
   try {
     const {fullName, email, amount} = req.query
-    console.log(fullName, email, amount)
+    console.log(fullName, email, amount);
+    
     res.redirect("http://localhost:4200/")
   } catch (error) {
     console.log("error in success controller",error);
