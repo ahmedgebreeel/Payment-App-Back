@@ -4,7 +4,7 @@ const User = require('../models/user.model');
 //creating session
  const createSession = async(req:any, res:any)=>{
     try {
-      console.log(req.body);
+      // console.log(req.body);
       const {fullName, email, amount} = req.body
       
       const session = await stripe.checkout.sessions.create({
@@ -25,7 +25,7 @@ const User = require('../models/user.model');
         success_url: `http://localhost:3000/api/checkout/success?fullName=${fullName}&email=${email}&amount=${amount}`,
         cancel_url: 'http://localhost:3000/api/checkout/cancel',
       });
-      console.log(session.url);
+      // console.log(session.url);
       
       res.json({ checkoutUrl: session.url });
     } catch (error) {
@@ -38,13 +38,21 @@ const User = require('../models/user.model');
 const success = async(req:any, res:any) => {
   try {
     const {fullName, email, amount} = req.query
-    console.log(fullName, email, amount);
-   const newUser =  await User.create({
-      fullName,
-      email,
-      amount});
-    console.log("new user created",newUser);
-  
+    let user = await User.findOne({ where: { email: email } });
+
+    if (user) {
+      // If user exists, update their amount
+      user.amount += parseFloat(amount); 
+      await user.save(); // Save the changes to the user
+    } else {
+      // If user doesn't exist, create a new user
+      user = await User.create({
+        fullName,
+        email,
+        amount
+      });
+    }
+
     res.redirect("http://localhost:4200/success")
   } catch (error) {
     console.log("error in success controller",error);
