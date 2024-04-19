@@ -1,4 +1,7 @@
 const stripe = require('stripe')(process.env.SECRET_KEY);
+const User = require('../models/user.model');
+
+//creating session
  const createSession = async(req:any, res:any)=>{
     try {
       console.log(req.body);
@@ -31,11 +34,17 @@ const stripe = require('stripe')(process.env.SECRET_KEY);
     }
   }
 
+  // success and cancel
 const success = async(req:any, res:any) => {
   try {
     const {fullName, email, amount} = req.query
     console.log(fullName, email, amount);
-    
+   const newUser =  await User.create({
+      fullName,
+      email,
+      amount});
+    console.log("new user created",newUser);
+  
     res.redirect("http://localhost:4200/")
   } catch (error) {
     console.log("error in success controller",error);
